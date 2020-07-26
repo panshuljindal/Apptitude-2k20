@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "393244690133",
+    "firebase_url": "https://your-location-5a66b.firebaseio.com",
+    "project_id": "your-location-5a66b",
+    "storage_bucket": "your-location-5a66b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393244690133:android:b8b4956c3a16734e90445c",
+        "android_client_info": {
+          "package_name": "com.panshuljindal.yourlocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393244690133-ivh0frb18uc7fdip2ctjubun1ipvu4ge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlq4d_mQ46kB5dZHwO_kUwXTsmeVdhIyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393244690133-ivh0frb18uc7fdip2ctjubun1ipvu4ge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
