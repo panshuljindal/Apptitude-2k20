@@ -121,6 +121,11 @@ public class signuppage extends AppCompatActivity {
             mobilenumber.requestFocus();
             return false;
         }
+        else if(mobilenumber.getText().length()>10){
+            mobilenumber.setError("Please enter valid mobile number");
+            mobilenumber.requestFocus();
+            return false;
+        }
         else if(email.getText().length()==0){
             email.setError("Please enter your email");
             email.requestFocus();
