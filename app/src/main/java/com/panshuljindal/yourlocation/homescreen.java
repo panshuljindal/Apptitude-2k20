@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class homescreen extends AppCompatActivity {
     // variables
 
     TextView textView1,textView2,textView3,textView4,textView5;
@@ -45,21 +45,23 @@ public class MainActivity extends AppCompatActivity {
         textView5=findViewById(R.id.textview5);
 
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
+        clickListerners();
+    }
+    public void clickListerners(){
         LButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //permission check
-                if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+                if(ActivityCompat.checkSelfPermission(homescreen.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
                     fetchLocation();
 
                 }else{
-                    ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+                    ActivityCompat.requestPermissions(homescreen.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
                 }
             }
         });
     }
-
-    private void fetchLocation() {
+    public void fetchLocation() {
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 if(location!=null){
 
                     try {
-                        Geocoder geocoder=new Geocoder(MainActivity.this, Locale.getDefault());
+                        Geocoder geocoder=new Geocoder(homescreen.this, Locale.getDefault());
                         List<Address> addresses=geocoder.getFromLocation(
                                 location.getLatitude(),location.getLongitude(),1
                         );
@@ -102,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             }
         });
