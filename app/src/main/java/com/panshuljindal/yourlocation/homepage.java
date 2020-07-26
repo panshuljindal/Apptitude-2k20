@@ -24,8 +24,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +40,7 @@ public class homepage extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     FirebaseAuth mFireBaseAuth;
     List<Address> addresses;
+    String count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,20 +81,34 @@ public class homepage extends AppCompatActivity {
                                     textView3.setText(Html.fromHtml(
                                             "<font color='#6200EE'><b>Country Name :</b><br></font>"
                                                     + addresses.get(0).getCountryName()));
-                                    textView4.setText(Html.fromHtml(
+                                    textView5.setText(Html.fromHtml(
                                             "<font color='#6200EE'><b>Address :</b><br></font>"
                                                     + addresses.get(0).getAddressLine(0)));
+                                    textView5.setText(Html.fromHtml(
+                                            "<font color='#6200EE'><b>Locality :</b><br></font>"
+                                                    + addresses.get(0).getLocality()));
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                                     Intent intents =getIntent();
                                     String email;
                                     email = intents.getStringExtra("Email");
                                     DatabaseReference myref = database.getReference("Users").child(email.replace(".","_"));
-                                    String id = myref.push().getKey();
-
-                                    myref.child("Location").child("Latitude").setValue(addresses.get(0).getLatitude());
-                                    myref.child("Location").child("Longitude").setValue(addresses.get(0).getLongitude());
-                                    myref.child("Location").child("Country Name").setValue(addresses.get(0).getCountryName());
-                                    myref.child("Location").child("Address").setValue(addresses.get(0).getAddressLine(0));
+                                    DatabaseReference myref1 = database.getReference("Users");
+                                    myref1.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            count= dataSnapshot.child("Count").getValue().toString();
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            Toast.makeText(homepage.this, "Please try again!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    myref.child(count).child("Location").child("Latitude").setValue(addresses.get(0).getLatitude());
+                                    myref.child(count).child("Location").child("Longitude").setValue(addresses.get(0).getLongitude());
+                                    myref.child(count).child("Location").child("Country Name").setValue(addresses.get(0).getCountryName());
+                                    myref.child(count).child("Location").child("Address").setValue(addresses.get(0).getLocality());
+                                    myref.child(count).child("Location").child("Address").setValue(addresses.get(0).getAddressLine(0));
+                                    myref1.child("Count").setValue(count+1);
                                 }
                                 catch(IOException e){
                                     e.printStackTrace();

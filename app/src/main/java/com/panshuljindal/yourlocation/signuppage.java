@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 public class signuppage extends AppCompatActivity {
     public EditText name,mobilenumber,email,password;
+    int count;
     TextView login;
     Button signup;
     FirebaseAuth mFireBaseAuth;
@@ -79,6 +80,7 @@ public class signuppage extends AppCompatActivity {
                                         myref.child("Sign In").child("Name").setValue(name.getText().toString());
                                         myref.child("Sign In").child("Mobile Number").setValue(mobilenumber.getText().toString());
                                         myref.child("Sign In").child("Password").setValue(password.getText().toString());
+                                        myref.child("Count").setValue(0);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
