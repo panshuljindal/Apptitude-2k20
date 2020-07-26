@@ -75,12 +75,10 @@ public class signuppage extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     try {
                                         FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                        DatabaseReference myref = database.getReference("Users");
-                                        String id = myref.push().getKey();
-                                        myref.child(id).child("Sign In").child("Name").setValue(name.getText().toString());
-                                        myref.child(id).child("Sign In").child("Mobile Number").setValue(mobilenumber.getText().toString());
-                                        myref.child(id).child("Sign In").child("Email").setValue(email.getText().toString());
-                                        myref.child(id).child("Sign In").child("Password").setValue(password.getText().toString());
+                                        DatabaseReference myref = database.getReference("Users").child(email.getText().toString().replace(".","_"));
+                                        myref.child("Sign In").child("Name").setValue(name.getText().toString());
+                                        myref.child("Sign In").child("Mobile Number").setValue(mobilenumber.getText().toString());
+                                        myref.child("Sign In").child("Password").setValue(password.getText().toString());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
