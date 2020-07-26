@@ -80,7 +80,7 @@ public class signuppage extends AppCompatActivity {
                                         myref.child("Sign In").child("Name").setValue(name.getText().toString());
                                         myref.child("Sign In").child("Mobile Number").setValue(mobilenumber.getText().toString());
                                         myref.child("Sign In").child("Password").setValue(password.getText().toString());
-                                        myref.child("Count").setValue(0);
+                                        myref.child("Count").setValue(1);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }

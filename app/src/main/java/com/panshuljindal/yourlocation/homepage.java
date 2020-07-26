@@ -12,12 +12,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -41,6 +41,7 @@ public class homepage extends AppCompatActivity {
     FirebaseAuth mFireBaseAuth;
     List<Address> addresses;
     String count;
+    int countint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,8 @@ public class homepage extends AppCompatActivity {
         LButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation animAlpha = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_alpha);
+                v.startAnimation(animAlpha);
                 if(ActivityCompat.checkSelfPermission(homepage.this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                     fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                         @Override
@@ -84,7 +87,7 @@ public class homepage extends AppCompatActivity {
                                     textView5.setText(Html.fromHtml(
                                             "<font color='#6200EE'><b>Address :</b><br></font>"
                                                     + addresses.get(0).getAddressLine(0)));
-                                    textView5.setText(Html.fromHtml(
+                                    textView4.setText(Html.fromHtml(
                                             "<font color='#6200EE'><b>Locality :</b><br></font>"
                                                     + addresses.get(0).getLocality()));
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -92,23 +95,25 @@ public class homepage extends AppCompatActivity {
                                     String email;
                                     email = intents.getStringExtra("Email");
                                     DatabaseReference myref = database.getReference("Users").child(email.replace(".","_"));
-                                    DatabaseReference myref1 = database.getReference("Users");
-                                    myref1.addValueEventListener(new ValueEventListener() {
+                                    myref.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            count= dataSnapshot.child("Count").getValue().toString();
+                                            count=dataSnapshot.child("Count").getValue().toString();
+                                            Log.i("count",count);
+                                            countint = Integer.parseInt(count)+1;
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            Toast.makeText(homepage.this, "Please try again!", Toast.LENGTH_SHORT).show();
+
                                         }
                                     });
-                                    myref.child(count).child("Location").child("Latitude").setValue(addresses.get(0).getLatitude());
-                                    myref.child(count).child("Location").child("Longitude").setValue(addresses.get(0).getLongitude());
-                                    myref.child(count).child("Location").child("Country Name").setValue(addresses.get(0).getCountryName());
-                                    myref.child(count).child("Location").child("Address").setValue(addresses.get(0).getLocality());
-                                    myref.child(count).child("Location").child("Address").setValue(addresses.get(0).getAddressLine(0));
-                                    myref1.child("Count").setValue(count+1);
+                                    myref.child("Count").setValue(countint);
+                                    myref.child("Location").child("Latitude").setValue(addresses.get(0).getLatitude());
+                                    myref.child("Location").child("Longitude").setValue(addresses.get(0).getLongitude());
+                                    myref.child("Location").child("Country Name").setValue(addresses.get(0).getCountryName());
+                                    myref.child("Location").child("Address").setValue(addresses.get(0).getLocality());
+                                    myref.child("Location").child("Address").setValue(addresses.get(0).getAddressLine(0));
+
                                 }
                                 catch(IOException e){
                                     e.printStackTrace();
@@ -129,7 +134,6 @@ public class homepage extends AppCompatActivity {
                 intent.putExtra("Latitude",addresses.get(0).getLatitude());
                 intent.putExtra("Longitude",addresses.get(0).getLongitude());
                 startActivity(intent);
-
             }
         });
     }
